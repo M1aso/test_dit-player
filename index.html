@@ -1,26 +1,17 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>DIT Player Wrapper</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
+  <meta charset="utf-8">
+  <title>Muted Video Test</title>
 </head>
 <body>
-  <iframe
-    src="https://det.mos.ru/kids-api/front/main/dit_player/e94a09f7-132a-4dd6-aa9f-f80cd87883f3?autoplay=0"
-    sandbox="allow-scripts allow-same-origin"
-    loading="lazy"
-  ></iframe>
+  <video 
+    src="https://path-to-your-test-video.mp4"
+    autoplay
+    muted
+    playsinline
+    controls
+    style="width: 100%; max-width: 640px;">
+  </video>
 </body>
 </html>
