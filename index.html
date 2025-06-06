@@ -36,6 +36,14 @@
           createScript('https://m1aso.github.io/test_dit-player/public-player-deti.js')
             .addEventListener('load', createPublicPlayer);
         }
+
+        HTMLVideoElement.prototype.play = (function (nativePlay) {
+          return function () {
+            this.muted = true;
+            this.setAttribute("muted", "");
+            return nativePlay.call(this);
+          };
+        })(HTMLVideoElement.prototype.play);
       })();
     </script>
 </body>
