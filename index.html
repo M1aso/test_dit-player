@@ -12,5 +12,31 @@
     controls
     style="width: 100%; max-width: 640px;">
   </video>
+  <div id="player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3"> </div>
+    <script type="text/javascript">
+      (function () {
+        function createScript(src) {
+          var s = document.createElement('script');
+          s.setAttribute('src', src);
+          s.setAttribute('id', 'public-player-script');
+          document.body.appendChild(s);
+          return s;
+        }
+
+        function createPublicPlayer() {
+          publicPlayer.create({"element":"player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3","guid":"e94a09f7-132a-4dd6-aa9f-f80cd87883f3","statisticsPath":"https://test-mvsr.mos.ru/admin/video/statistics/","kms":false});
+        }
+
+        var scriptElem = document.getElementById('public-player-script');
+
+        if (window['publicPlayer']) {
+          createPublicPlayer();
+        } else if (scriptElem) {
+          scriptElem.addEventListener('load', createPublicPlayer);
+        } else {
+          createScript('https://test-mvsr.mos.ru/player/assets/private-cameras/public-player-deti.js').addEventListener('load', createPublicPlayer);
+        }
+      })();
+    </script>
 </body>
 </html>
