@@ -9,43 +9,54 @@
     <script type="text/javascript">
       (function () {
         function createScript(src) {
-          var s = document.createElement('script');
-          s.setAttribute('src', src);
-          s.setAttribute('id', 'public-player-script');
+          const s = document.createElement('script');
+          s.src = src;
+          s.id = 'public-player-script';
           document.body.appendChild(s);
           return s;
         }
-
-        function tryMuteVideo(retries = 10) {
-          const tryFind = () => {
-            const video = document.querySelector('#player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3 video');
+  
+        function tryMuteVideo(retries = 20) {
+          const interval = setInterval(() => {
+            const container = document.getElementById('player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3');
+            if (!container) return;
+  
+            const video = container.querySelector('video');
+  
             if (video) {
-              video.muted = true;
+              video.muted = true;                          // программно
               video.volume = 0;
-              video.setAttribute('muted', 'muted');
-              console.log('✅ Video muted');
-            } else if (retries > 0) {
-              setTimeout(() => tryMuteVideo(retries - 1), 300);
-            } else {
-              console.warn('⚠️ Не удалось найти <video>');
+              video.setAttribute('muted', '');             // HTML-атрибут
+              console.log('✅ Video forcibly muted');
+              clearInterval(interval);
             }
-          };
-          tryFind();
+  
+            if (--retries <= 0) {
+              console.warn('⚠️ Video element not found after multiple attempts');
+              clearInterval(interval);
+            }
+          }, 300);
         }
-
+  
         function createPublicPlayer() {
-          publicPlayer.create({"element":"player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3","guid":"e94a09f7-132a-4dd6-aa9f-f80cd87883f3","statisticsPath":"https://test-mvsr.mos.ru/admin/video/statistics/","kms":false,"autoPlay":false});
-          tryMuteVideo();
+          publicPlayer.create({
+            element: "player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3",
+            guid: "e94a09f7-132a-4dd6-aa9f-f80cd87883f3",
+            statisticsPath: "https://test-mvsr.mos.ru/admin/video/statistics/",
+            kms: false,
+            autoPlay: false
+          });
+          tryMuteVideo(); // 🧩 важная вставка
         }
-
-        var scriptElem = document.getElementById('public-player-script');
-
+  
+        const existingScript = document.getElementById('public-player-script');
         if (window['publicPlayer']) {
           createPublicPlayer();
-        } else if (scriptElem) {
-          scriptElem.addEventListener('load', createPublicPlayer);
+        } else if (existingScript) {
+          existingScript.addEventListener('load', createPublicPlayer);
         } else {
-          createScript('https://mvsr.mos.ru/player/assets/private-cameras/public-player-deti.js').addEventListener('load', createPublicPlayer);
+          createScript('https://mvsr.mos.ru/player/assets/private-cameras/public-player-deti.js')
+            .addEventListener('load', createPublicPlayer);
         }
       })();
     </script>
