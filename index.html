@@ -28,18 +28,14 @@
         }
   
         const existingScript = document.getElementById('public-player-script');
-        document.getElementById('video-thumbnail').addEventListener('click', () => {
-          document.getElementById('video-thumbnail').style.display = 'none';
-          document.getElementById('player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3').style.display = 'block';
-          if (window['publicPlayer']) {
-            createPublicPlayer();
-          } else if (existingScript) {
-            existingScript.addEventListener('load', createPublicPlayer);
-          } else {
-            createScript('https://m1aso.github.io/test_dit-player/public-player-deti.js')
-              .addEventListener('load', createPublicPlayer);
-          }
-        });
+        if (window['publicPlayer']) {
+          createPublicPlayer();
+        } else if (existingScript) {
+          existingScript.addEventListener('load', createPublicPlayer);
+        } else {
+          createScript('https://m1aso.github.io/test_dit-player/public-player-deti.js')
+            .addEventListener('load', createPublicPlayer);
+        }
       })();
     </script>
 </body>
