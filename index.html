@@ -24,6 +24,11 @@
             kms: false,
             autoPlay: true
           });
+          if (navigator.userAgent.includes('Telegram')) {
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          }
         }
   
         const existingScript = document.getElementById('public-player-script');
@@ -34,12 +39,6 @@
         } else {
           createScript('https://m1aso.github.io/test_dit-player/public-player-deti.js')
             .addEventListener('load', createPublicPlayer);
-        }
-
-        if (navigator.userAgent.includes('Telegram')) {
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
         }
       })();
     </script>
