@@ -5,6 +5,7 @@
   <title>Muted Video Test</title>
 </head>
 <body>
+  <img src="https://i.pinimg.com/736x/5a/36/0c/5a360cd312aecb872cc2f1cfe5cb8e40.jpg" id="video-thumbnail" style="cursor: pointer;">
   <div id="player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3"> </div>
     <script type="text/javascript">
       (function () {
@@ -27,14 +28,18 @@
         }
   
         const existingScript = document.getElementById('public-player-script');
-        if (window['publicPlayer']) {
-          createPublicPlayer();
-        } else if (existingScript) {
-          existingScript.addEventListener('load', createPublicPlayer);
-        } else {
-          createScript('https://m1aso.github.io/test_dit-player/public-player-deti.js')
-            .addEventListener('load', createPublicPlayer);
-        }
+        document.getElementById('video-thumbnail').addEventListener('click', () => {
+          document.getElementById('video-thumbnail').style.display = 'none';
+          document.getElementById('player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3').style.display = 'block';
+          if (window['publicPlayer']) {
+            createPublicPlayer();
+          } else if (existingScript) {
+            existingScript.addEventListener('load', createPublicPlayer);
+          } else {
+            createScript('https://m1aso.github.io/test_dit-player/public-player-deti.js')
+              .addEventListener('load', createPublicPlayer);
+          }
+        });
       })();
     </script>
 </body>
