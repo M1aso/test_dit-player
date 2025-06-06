@@ -22,10 +22,10 @@
             if (video) {
               video.muted = true;
               video.volume = 0;
-              video.setAttribute('muted', '');
+              video.setAttribute('muted', 'muted');
               console.log('✅ Video muted');
             } else if (retries > 0) {
-              setTimeout(() => tryMuteVideo(retries - 1), 1000);
+              setTimeout(() => tryMuteVideo(retries - 1), 300);
             } else {
               console.warn('⚠️ Не удалось найти <video>');
             }
