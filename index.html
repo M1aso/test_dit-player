@@ -1,42 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <title>Muted Video Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Custom Plyr Player</title>
+  <!-- Подключаем CSS Plyr -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/plyr@3.8.4/dist/plyr.css"
+  />
+  <style>
+    /* Скрываем дефолтные элементы управления */
+    #player {
+      width: 100%;
+      max-width: 720px;
+    }
+    .plyr__controls {
+      display: none;
+    }
+    /* Стили кастомной кнопки */
+    #custom-play {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #custom-play.playing::after {
+      content: '❚❚'; /* Pause icon */
+    }
+    #custom-play:not(.playing)::after {
+      content: '▶'; /* Play icon */
+    }
+  </style>
 </head>
 <body>
-  <img src="https://i.pinimg.com/736x/5a/36/0c/5a360cd312aecb872cc2f1cfe5cb8e40.jpg" id="video-thumbnail" style="cursor: pointer;">
-  <div id="player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3"> </div>
-    <script type="text/javascript">
-      (function () {
-        function createScript(src) {
-          const s = document.createElement('script');
-          s.src = src;
-          s.id = 'public-player-script';
-          document.body.appendChild(s);
-          return s;
+  <h1>Пример видеоплеера на Plyr</h1>
+
+  <!-- Контейнер видео -->
+  <video
+    id="player"
+    poster="https://det.mos.ru/assets/ui-kit-icons/play-yellow.svg"
+    playsinline
+  >
+    <!-- Источники видео; замените ссылки на свои -->
+    <source
+      src="https://stream02.mos.ru/hls/2024/08/21/1c01b23b78ae0c552a7dd3ab69a0d8c22b7e406a25802fabab7a701f4c86bf0d/src/02bcc4af-d38f-42b8-aa2c-d543bea01f2e.mp4"
+      type="video/mp4"
+    />
+    <source
+      src="https://stream05.mos.ru/hls/2025/06/24/d800cbda2c8dcc140696e3a2ed8026f49eb104beebd2668cf33a0617add2d3d9/src/602556f3-74bd-4b31-8705-4932ee1a91b2.mp4"
+      type="video/mp4"
+    />
+    <!-- Дополнительно можно добавить WebM -->
+    <source
+      src="https://example.com/path/to/video.webm"
+      type="video/webm"
+    />
+    Ваш браузер не поддерживает видео.
+  </video>
+
+  <!-- Кнопка Play/Pause -->
+  <button id="custom-play"></button>
+
+  <!-- Переключатель автозапуска -->
+  <label style="margin-left:20px;">
+    <input type="checkbox" id="toggle-autoplay"/>
+    Автозапуск
+  </label>
+
+  <!-- Скрипты Plyr и инициализация -->
+  <script src="https://cdn.jsdelivr.net/npm/plyr@3.8.4/dist/plyr.polyfilled.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Инициализируем Plyr
+      const player = new Plyr('#player', {
+        controls: [],        // убираем дефолтные контролы
+        muted: true,         // по умолчанию выключим звук (для работы autoplay)
+        autoplay: false,     // стартовая настройка
+        clickToPlay: false,  // отключаем плей по клику на видео
+      });
+
+      const btn = document.getElementById('custom-play');
+      const toggle = document.getElementById('toggle-autoplay');
+
+      // Обработчик кнопки Play/Pause
+      btn.addEventListener('click', () => {
+        if (player.playing) {
+          player.pause();
+        } else {
+          player.play();
         }
-  
-        function createPublicPlayer() {
-          publicPlayer.create({
-            element: "player-container-e94a09f7-132a-4dd6-aa9f-f80cd87883f3",
-            guid: "e94a09f7-132a-4dd6-aa9f-f80cd87883f3",
-            statisticsPath: "https://mvsr.mos.ru/admin/video/statistics/",
-            kms: false,
-            autoPlay: true
+      });
+
+      // Меняем вид кнопки при старте/паузе
+      player.on('play',  () => btn.classList.add('playing'));
+      player.on('pause', () => btn.classList.remove('playing'));
+
+      // Переключатель автозапуска
+      toggle.addEventListener('change', () => {
+        player.autoplay = toggle.checked;
+        // если включили автозапуск — сразу попробуем запустить
+        if (toggle.checked) {
+          player.play().catch(() => {
+            console.warn('Autoplay заблокирован. Ожидаем действия пользователя.');
           });
         }
-  
-        const existingScript = document.getElementById('public-player-script');
-        if (window['publicPlayer']) {
-          createPublicPlayer();
-        } else if (existingScript) {
-          existingScript.addEventListener('load', createPublicPlayer);
-        } else {
-          createScript('https://m1aso.github.io/test_dit-player/public-player-deti.js')
-            .addEventListener('load', createPublicPlayer);
-        }
-      })();
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
