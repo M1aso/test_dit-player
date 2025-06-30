@@ -15,23 +15,42 @@
       width: 100%;
       max-width: 720px;
     }
-    .plyr__controls {
-      display: none;
-    }
     /* Стили кастомной кнопки */
     #custom-play {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 58px;
+      height: 58px;
+      position: absolute;
+      top: calc(50% - 29px);
+      right: calc(50% - 29px);
+      z-index: 2;
+      object-fit: contain;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #f40, #ff831d);
+      box-shadow: 0 4px 15px #f68e8e9c;
+    }
+    #custom-play.button-icon__block {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 3;
+      top: 2px;
+      right: 2px;
+      height: calc(100% - 4px);
+      width: calc(100% - 4px);
+      background: #fff;
+    }
+    #custom-play img {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 10;
-      background: transparent;
-      border: none;
-      padding: 0;
-      cursor: pointer;
+      z-index: 4;
+      margin-left: 3px;
     }
     #custom-play.playing img {
-      opacity: 0.6;
+      opacity: 0;
     }
   </style>
 </head>
@@ -63,12 +82,9 @@
 
     <!-- Кнопка поверх видео -->
     <button id="custom-play" aria-label="Play video">
-      <img
-        src="https://det.mos.ru/assets/ui-kit-icons/play-yellow.svg"
-        alt="Play"
-        width="64"
-        height="64"
-      />
+      <div class="button-icon__block">
+        <img src="https://det.mos.ru/assets/ui-kit-icons/play-yellow.svg" alt="" class="button-icon__img">
+      </div>
     </button>
   </div>
 
@@ -87,6 +103,7 @@
         muted: true,         // по умолчанию выключим звук (для работы autoplay)
         autoplay: true,     // стартовая настройка
         clickToPlay: false,  // отключаем плей по клику на видео
+        controls: ['play-large', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']
       });
 
       const btn = document.getElementById('custom-play');
