@@ -119,6 +119,8 @@
       player.on('play',  () => btn.classList.add('playing'));
       player.on('pause', () => btn.classList.remove('playing'));
 
+      const container = player.elements.container;
+
       // Клик по любой области плеера — пауза, если видео не на паузе
       container.addEventListener('click', (e) => {
         // чтобы не срабатывать при клике по контролам
