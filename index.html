@@ -20,21 +20,18 @@
     }
     /* Стили кастомной кнопки */
     #custom-play {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      background: #007bff;
-      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      background: transparent;
       border: none;
-      border-radius: 4px;
+      padding: 0;
       cursor: pointer;
     }
-    #custom-play.playing::after {
-      content: '❚❚'; /* Pause icon */
-    }
-    #custom-play:not(.playing)::after {
-      content: '▶'; /* Play icon */
+    #custom-play.playing img {
+      opacity: 0.6;
     }
   </style>
 </head>
@@ -42,30 +39,37 @@
   <h1>Пример видеоплеера на Plyr</h1>
 
   <!-- Контейнер видео -->
-  <video
-    id="player"
-    poster="https://det.mos.ru/assets/ui-kit-icons/play-yellow.svg"
-    playsinline
-  >
-    <!-- Источники видео; замените ссылки на свои -->
-    <source
-      src="https://stream02.mos.ru/hls/2024/08/21/1c01b23b78ae0c552a7dd3ab69a0d8c22b7e406a25802fabab7a701f4c86bf0d/src/02bcc4af-d38f-42b8-aa2c-d543bea01f2e.mp4"
-      type="video/mp4"
-    />
-    <source
-      src="https://stream05.mos.ru/hls/2025/06/24/d800cbda2c8dcc140696e3a2ed8026f49eb104beebd2668cf33a0617add2d3d9/src/602556f3-74bd-4b31-8705-4932ee1a91b2.mp4"
-      type="video/mp4"
-    />
-    <!-- Дополнительно можно добавить WebM -->
-    <source
-      src="https://example.com/path/to/video.webm"
-      type="video/webm"
-    />
-    Ваш браузер не поддерживает видео.
-  </video>
+  <div class="video-wrapper">
+    <video
+      id="player"
+      poster="https://cdn.det.mos.ru/kids/media/tales/Weightlifter.png"
+      playsinline
+      preload="metadata"
+      muted
+    >
+      <!-- Источники видео; замените ссылки на свои -->
+      <source
+        src="https://stream02.mos.ru/hls/2024/08/21/1c01b23b78ae0c552a7dd3ab69a0d8c22b7e406a25802fabab7a701f4c86bf0d/src/02bcc4af-d38f-42b8-aa2c-d543bea01f2e.mp4"
+        type="video/mp4"
+      />
+      <!-- Дополнительно можно добавить WebM -->
+      <!--source
+        src="https://example.com/path/to/video.webm"
+        type="video/webm"
+      /-->
+      Ваш браузер не поддерживает видео.
+    </video>
 
-  <!-- Кнопка Play/Pause -->
-  <button id="custom-play"></button>
+    <!-- Кнопка поверх видео -->
+    <button id="custom-play" aria-label="Play video">
+      <img
+        src="https://example.com/path/to/your-icon.svg"
+        alt="Play"
+        width="64"
+        height="64"
+      />
+    </button>
+  </div>
 
   <!-- Переключатель автозапуска -->
   <label style="margin-left:20px;">
@@ -81,7 +85,7 @@
       const player = new Plyr('#player', {
         controls: [],        // убираем дефолтные контролы
         muted: true,         // по умолчанию выключим звук (для работы autoplay)
-        autoplay: false,     // стартовая настройка
+        autoplay: true,     // стартовая настройка
         clickToPlay: false,  // отключаем плей по клику на видео
       });
 
