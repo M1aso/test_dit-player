@@ -52,6 +52,10 @@
     #custom-play.playing {
       opacity: 0;
     }
+    /* Скрываем именно кнопку Play (класс plyr__control--play) */
+    .plyr__control.plyr__control--play {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -122,15 +126,11 @@
       player.on('play',  () => btn.classList.add('playing'));
       player.on('pause', () => btn.classList.remove('playing'));
 
-      // Переключатель автозапуска
-      toggle.addEventListener('change', () => {
-        player.autoplay = toggle.checked;
-        // если включили автозапуск — сразу попробуем запустить
-        if (toggle.checked) {
-          player.play().catch(() => {
-            console.warn('Autoplay заблокирован. Ожидаем действия пользователя.');
-          });
-        }
+      // Клик по любой области плеера — пауза, если видео не на паузе
+      container.addEventListener('click', (e) => {
+        // чтобы не срабатывать при клике по контролам
+        if (!player.playing || e.target.closest('.plyr__controls')) return;
+        player.pause();
       });
     });
   </script>
