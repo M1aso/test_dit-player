@@ -98,9 +98,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       // Инициализируем Plyr
       const player = new Plyr('#player', {
-        muted: true,         // по умолчанию выключим звук (для работы autoplay)
-        autoplay: true,     // стартовая настройка
-        clickToPlay: false,  // отключаем плей по клику на видео
+        muted: false,         // по умолчанию выключим звук (для работы autoplay)
+        autoplay: false,     // стартовая настройка
+        clickToPlay: true,  // отключаем плей по клику на видео
         controls: ['play-large', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']
       });
 
